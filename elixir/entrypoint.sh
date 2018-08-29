@@ -1,6 +1,7 @@
 #!/bin/sh
 
 VERSION=$1
+DISTRO=$2
 ITERATION=1
 PREFIX=/opt/elixir
 
