@@ -1,5 +1,5 @@
 # packages
-Generate RPMs using Docker and FPM. 
+Generate RPMs using Docker and FPM.
 
 ### Example
 ```bash
