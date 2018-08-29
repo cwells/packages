@@ -1,4 +1,3 @@
-# packages
 Generate RPMs using Docker and [FPM](https://github.com/jordansissel/fpm). Basically you get a Docker image with FPM pre-installed and some helper scripts. You do the rest.
 
 ### Example
