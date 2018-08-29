@@ -2,7 +2,7 @@
 
 VERSION=$1
 
-curl -s http://packages.erlang-solutions.com/rpm/centos/erlang_solutions.repo > /etc/yum.repos.d/erlang_solutions.repo
+curl -s http://packages.erlang-solutions.com/rpm/centos/erlang_solutions.repo -o /etc/yum.repos.d/erlang_solutions.repo
 yum -y install esl-erlang
 
 git clone --branch v${VERSION} --depth 1 https://github.com/elixir-lang/elixir.git /opt/elixir
