@@ -9,5 +9,5 @@ elif [ ! -d "$1" ]; then
 fi
 
 mkdir -p packages
-docker build -t fpm -v "$PWD/$1:/scripts" --build-arg version=$2 .
+docker build -t fpm .
 docker run -v "$PWD/packages:/packages" -v "$PWD/$1:/scripts" --rm --entrypoint "/scripts/entrypoint.sh" fpm $2
