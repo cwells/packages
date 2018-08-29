@@ -1,8 +1,13 @@
-#!/bin/sh
+#!/bin/bash
+
+function distro_name {
+  local IFS=':'; read -ra parts <<< "$1" # split on ":"
+  printf "%s" "${parts[@]}"              # concatenate
+}
 
 VERSION=$1
-DISTRO=$2
 ITERATION=1
+DISTRO=$( distro_name "$2" )
 PREFIX=/opt/elixir
 
 curl -s http://packages.erlang-solutions.com/rpm/centos/erlang_solutions.repo -o /etc/yum.repos.d/erlang_solutions.repo
@@ -19,7 +24,7 @@ cat << EOF > /tmp/before-remove
 rm -f /usr/local/bin/{iex,mix,elixir,elixirc}
 EOF
 
-fpm --input-type dir --output-type rpm --package /packages \
+fpm --input-type dir --output-type rpm --package /packages --rpm-dist $DISTRO \
   --name elixir --version $VERSION --iteration $ITERATION \
   --depends esl-erlang \
   --rpm-summary 'The Elixir programming language' \
