@@ -9,5 +9,5 @@ elif [ ! -d "$1" ]; then
 fi
 
 mkdir -p packages
-docker build -t fpm .
+docker build -t fpm --build-arg distro=$3 .
 docker run -v "$PWD/packages:/packages" -v "$PWD/$1:/scripts" --rm --entrypoint "/scripts/entrypoint.sh" fpm $2
