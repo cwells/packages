@@ -7,7 +7,15 @@ curl -s http://packages.erlang-solutions.com/rpm/centos/erlang_solutions.repo -o
 yum -y install esl-erlang
 
 git clone --branch v${VERSION} --depth 1 https://github.com/elixir-lang/elixir.git $PREFIX
-cd $PREFIX && make clean && make
+(cd $PREFIX && make clean && make)
+
+cat << EOF > /tmp/after-install
+ln -s $PREFIX/bin/{iex,mix,elixir,elixirc} /usr/local/bin
+EOF
+
+cat << EOF > /tmp/before-remove
+rm -f /usr/local/bin/{iex,mix,elixir,elixirc}
+EOF
 
 fpm --input-type dir --output-type rpm --package /packages \
   --name elixir --version ${VERSION} --iteration 1 \
@@ -17,6 +25,6 @@ fpm --input-type dir --output-type rpm --package /packages \
   --url 'https://elixir-lang.org/' \
   --vendor 'FocusVision Worldwide, Inc' \
   --license 'Apache 2.0' \
-  --after-install /scripts/after-install.sh \
-  --before-remove /scripts/before-remove.sh \
+  --after-install /tmp/after-install \
+  --before-remove /tmp/before-remove \
   $PREFIX
