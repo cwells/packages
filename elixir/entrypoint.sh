@@ -1,13 +1,8 @@
 #!/bin/bash
 
-function distro_name {
-  local IFS=':'; read -ra parts <<< "$1" # split on ":"
-  printf "%s" "${parts[@]}"              # concatenate
-}
-
 VERSION=$1
 ITERATION=1
-DISTRO=$( distro_name "$2" )
+DISTRO=$2
 PREFIX=/opt/elixir
 
 curl -s http://packages.erlang-solutions.com/rpm/centos/erlang_solutions.repo -o /etc/yum.repos.d/erlang_solutions.repo

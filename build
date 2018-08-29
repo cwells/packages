@@ -1,13 +1,31 @@
 #!/bin/sh
 
-if [ -z "$1" -o -z "$2" ]; then
-  echo "build <package> <version>"
+if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
+  echo "build <package> <version> <distro>"
   exit 1
 elif [ ! -d "$1" ]; then
   echo "invalid package \"$1\""
   exit 1
 fi
 
+function distro_name {
+  local IFS=':'; read -ra parts <<< "$1" # split on ":"
+  printf "%s" "${parts[@]}"              # concatenate
+}
+
+package=$1
+version=$2
+distro=$( distro_name "$3" )
+
 mkdir -p packages
-docker build -t fpm --build-arg distro=$3 .
-docker run -v "$PWD/packages:/packages" -v "$PWD/$1:/scripts" --rm --entrypoint "/scripts/entrypoint.sh" fpm $2 $3
+
+docker build \
+  -t fpm \
+  --build-arg distro=$distro .
+
+docker run \
+  -v "$PWD/packages:/packages" \
+  -v "$PWD/${package}:/scripts" \
+  --entrypoint "/scripts/entrypoint.sh" \
+  --rm \
+  fpm $version $distro
