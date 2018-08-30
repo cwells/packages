@@ -1,5 +1,6 @@
-DISTRO_ERLANG="erlang"
+DISTRO_PKG='dnf -y -q -e 0'
+DISTRO_ERLANG='erlang'
 
 function install_erlang() {
-  yum -y -q -e 0 install $DISTRO_ERLANG
+  $DISTRO_PKG install $DISTRO_ERLANG
 }

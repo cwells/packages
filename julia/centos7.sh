@@ -1,7 +1,8 @@
+DISTRO_PKG='yum -y -q -e 0'
 DISTRO_GFORTRAN="gfortran"
 
 function install_cmake() {
-  yum -y -q -e 0 remove cmake
+  $DISTRO_PKG remove cmake
 
   CMAKE_VERSION=${CMAKE_VERSION:='3.12.1'}
   CMAKE_MAJOR=$( version_split $CMAKE_VERSION 0 )

@@ -9,7 +9,7 @@ source "/scripts/${PACKAGE_DISTRO}.sh"
 install_erlang
 
 git clone --branch v$PACKAGE_VERSION --depth 1 https://github.com/elixir-lang/elixir.git $PREFIX
-( cd $PREFIX && make )
+( cd $PREFIX && make -j4 )
 
 cat << EOF > /tmp/after-install
 ln -s $PREFIX/bin/{iex,mix,elixir,elixirc} /usr/local/bin

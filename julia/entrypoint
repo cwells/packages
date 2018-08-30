@@ -7,7 +7,7 @@ PREFIX=/opt/julia
 source "/scripts/functions.sh"
 source "/scripts/${PACKAGE_DISTRO}.sh"
 
-yum -y -q -e 0 install clang m4 $DISTRO_GFORTRAN
+$DISTRO_PKG install clang m4 $DISTRO_GFORTRAN
 
 install_cmake
 
