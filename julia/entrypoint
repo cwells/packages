@@ -2,11 +2,12 @@
 
 set -e
 
+function version_split {
+  local IFS='.'; read -ra parts <<< "$1" # split on "."
+  printf "%s" "${parts[$2]:=1}"
+}
+
 PREFIX=/opt/julia
-CMAKE_MAJOR=${CMAKE_MAJOR:=3}
-CMAKE_MINOR=${CMAKE_MINOR:=12}
-CMAKE_POINT=${CMAKE_POINT:=1}
-CMAKE="${CMAKE_MAJOR}.${CMAKE_MINOR}.${CMAKE_POINT}"
 
 source "/scripts/${PACKAGE_DISTRO}.sh"
 
