@@ -17,15 +17,10 @@ source "/scripts/${DISTRO}.sh"
 
 yum -y -q -e 0 install clang $GFORTRAN
 
-( # julia requires recent cmake
-  cd /usr/local/src
-  curl "https://cmake.org/files/v${CMAKE_MAJOR}.${CMAKE_MINOR}/cmake-${CMAKE}.tar.gz" -o cmake.tar.gz
-  tar zxvf cmake.tar.gz
-  ( cd "cmake-${CMAKE}" && ./bootstrap --prefix=/usr/local && make -j4 && make install )
-)
+install_cmake
 
 git clone --branch v$VERSION --depth 1 https://github.com/JuliaLang/julia.git $PREFIX
-( cd $PREFIX && make -j4 USEGCC=0 USECLANG=1 )
+( cd $PREFIX && make USEGCC=0 USECLANG=1 )
 
 cat << EOF > /tmp/after-install
 ln -s $PREFIX/bin/julia /usr/local/bin
