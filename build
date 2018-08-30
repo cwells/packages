@@ -1,5 +1,7 @@
 #!/bin/sh
 
+# set -e
+
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
   echo "build <package> <version> <distro>"
   exit 1
@@ -19,13 +21,12 @@ distro=$( distro_name "$3" )
 
 mkdir -p packages
 
-docker build \
-  -t fpm \
-  --build-arg distro=$distro .
+docker build -t "fpm-${distro}" -f "Dockerfile.${distro}" .
 
 docker run \
-  -v "$PWD/packages:/packages" \
-  -v "$PWD/${package}:/scripts" \
-  --entrypoint "/scripts/entrypoint.sh" \
+  --volume "$PWD/packages:/packages" \
+  --volume "$PWD/${package}:/scripts" \
+  --env-file "$PWD/.env" \
+  --entrypoint "/scripts/entrypoint" \
   --rm \
-  fpm $version $distro
+  "fpm-${distro}" $version $distro
