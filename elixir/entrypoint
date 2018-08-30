@@ -11,9 +11,8 @@ VENDOR=${PACKAGE_VENDOR:=unset}
 
 source "/scripts/${DISTRO}.sh"
 
-install_erlang
+ERLANG=$( install_erlang )
 
-rm -rf $PREFIX
 git clone --branch v$VERSION --depth 1 https://github.com/elixir-lang/elixir.git $PREFIX
 ( cd $PREFIX && make clean && make )
 
@@ -27,7 +26,7 @@ EOF
 
 fpm --input-type dir --output-type rpm --package /packages --rpm-dist $DISTRO \
   --name elixir --version $VERSION --iteration $ITERATION \
-  --depends esl-erlang \
+  --depends $ERLANG \
   --rpm-summary 'The Elixir programming language' \
   --description 'Elixir is a dynamic, functional language designed for building scalable and maintainable applications.' \
   --url 'https://elixir-lang.org/' \
