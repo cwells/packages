@@ -1,5 +1,5 @@
 DISTRO_PKG='yum -y -q -e 0'
-DISTRO_GFORTRAN="gfortran"
+DISTRO_GFORTRAN='gfortran'
 
 function install_cmake() {
   $DISTRO_PKG remove cmake
