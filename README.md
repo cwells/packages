@@ -2,7 +2,8 @@ Generate RPMs using Docker and [FPM](https://github.com/jordansissel/fpm). Basic
 
 ### Example
 ```bash
-$ ./build elixir 1.7.2 centos:7
+$ ./build elixir 1.7.2:1 centos:7
+$ ./build julia 1.0.1:1 fedora:28
 ```
 Resulting RPM appears in `packages/` directory.
 
@@ -14,5 +15,5 @@ Resulting RPM appears in `packages/` directory.
 3. In this directory, create a `Dockerfile` for each distribution (e.g. `Dockerfile.centos7`).
 4. Add any ancillary scripts (e.g. RPM pre/post-install scripts) to this directory.
    - These will be available inside the container under `/scripts`.
-4. Run `./build <package> <version> <distro>` from the parent directory.
+4. Run `./build <package> <version>:<iteration> <distro>:<version>` from the parent directory.
 5. Resulting RPM will appear in `packages/` on the host filesystem.
