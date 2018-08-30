@@ -2,13 +2,16 @@
 
 set -e
 
-VERSION=$1
-ITERATION=1
-DISTRO=$2
+VERSION=$PACKAGE_VERSION
+ITERATION=$PACKAGE_ITERATION
+DISTRO=$PACKAGE_DISTRO
 PREFIX=/opt/elixir
+MAINTAINER=${PACKAGE_MAINTAINER:=unset}
+VENDOR=${PACKAGE_VENDOR:=unset}
 
-curl -s http://packages.erlang-solutions.com/rpm/centos/erlang_solutions.repo -o /etc/yum.repos.d/erlang_solutions.repo
-yum -y install esl-erlang
+source "/scripts/${DISTRO}.sh"
+
+install_erlang
 
 rm -rf $PREFIX
 git clone --branch v$VERSION --depth 1 https://github.com/elixir-lang/elixir.git $PREFIX
@@ -29,8 +32,8 @@ fpm --input-type dir --output-type rpm --package /packages --rpm-dist $DISTRO \
   --description 'Elixir is a dynamic, functional language designed for building scalable and maintainable applications.' \
   --url 'https://elixir-lang.org/' \
   --license 'Apache 2.0' \
-  --maintainer "${PACKAGE_MAINTAINER}" \
-  --vendor "${PACKAGE_VENDOR}" \
+  --maintainer "${MAINTAINER}" \
+  --vendor "${VENDOR}" \
   --after-install /tmp/after-install \
   --before-remove /tmp/before-remove \
   --force \

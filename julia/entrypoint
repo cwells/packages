@@ -2,21 +2,23 @@
 
 set -e
 
-VERSION=$1
-ITERATION=1
-DISTRO=$2
+VERSION=$PACKAGE_VERSION
+ITERATION=$PACKAGE_ITERATION
+DISTRO=$PACKAGE_DISTRO
 PREFIX=/opt/julia
-CMAKE_MAJOR=3
-CMAKE_MINOR=12
-CMAKE_POINT=1
+CMAKE_MAJOR=${CMAKE_MAJOR:=3}
+CMAKE_MINOR=${CMAKE_MINOR:=12}
+CMAKE_POINT=${CMAKE_POINT:=1}
 CMAKE="${CMAKE_MAJOR}.${CMAKE_MINOR}.${CMAKE_POINT}"
+MAINTAINER=${PACKAGE_MAINTAINER:=unset}
+VENDOR=${PACKAGE_VENDOR:=unset}
 
 yum -y -q -e 0 install clang gfortran
 
 ( # julia requires recent cmake
   cd /usr/local/src
-  curl "https://cmake.org/files/v${CMAKE_MAJOR}.${CMAKE_MINOR}/cmake-${CMAKE}.tar.gz" -O
-  tar zxvf "cmake-${CMAKE}.tar.gz"
+  curl "https://cmake.org/files/v${CMAKE_MAJOR}.${CMAKE_MINOR}/cmake-${CMAKE}.tar.gz" -o cmake.tar.gz
+  tar zxvf cmake.tar.gz
   ( cd "cmake-${CMAKE}" && ./bootstrap --prefix=/usr/local && make -j4 && make install )
 )
 
@@ -37,8 +39,8 @@ fpm --input-type dir --output-type rpm --package /packages --rpm-dist $DISTRO \
   --description 'Julia is a high-level, high-performance dynamic language for technical computing.' \
   --url 'https://julialang.org/' \
   --license 'Apache 2.0' \
-  --maintainer "${PACKAGE_MAINTAINER}" \
-  --vendor "${PACKAGE_VENDOR}" \
+  --maintainer "${MAINTAINER}" \
+  --vendor "${VENDOR}" \
   --after-install /tmp/after-install \
   --before-remove /tmp/before-remove \
   --force \
