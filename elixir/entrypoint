@@ -11,7 +11,7 @@ VENDOR=${PACKAGE_VENDOR:=unset}
 
 source "/scripts/${DISTRO}.sh"
 
-ERLANG=$( install_erlang )
+install_erlang
 
 git clone --branch v$VERSION --depth 1 https://github.com/elixir-lang/elixir.git $PREFIX
 ( cd $PREFIX && make )
