@@ -1,0 +1,1 @@
+GFORTRAN="gcc-gfortran"
