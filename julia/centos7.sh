@@ -1,4 +1,4 @@
-GFORTRAN="gfortran"
+DISTRO_GFORTRAN="gfortran"
 
 function install_cmake() {
   yum -y -q -e 0 remove cmake

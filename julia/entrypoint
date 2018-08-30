@@ -2,24 +2,19 @@
 
 set -e
 
-VERSION=$PACKAGE_VERSION
-ITERATION=$PACKAGE_ITERATION
-DISTRO=$PACKAGE_DISTRO
 PREFIX=/opt/julia
 CMAKE_MAJOR=${CMAKE_MAJOR:=3}
 CMAKE_MINOR=${CMAKE_MINOR:=12}
 CMAKE_POINT=${CMAKE_POINT:=1}
 CMAKE="${CMAKE_MAJOR}.${CMAKE_MINOR}.${CMAKE_POINT}"
-MAINTAINER=${PACKAGE_MAINTAINER:=unset}
-VENDOR=${PACKAGE_VENDOR:=unset}
 
-source "/scripts/${DISTRO}.sh"
+source "/scripts/${PACKAGE_DISTRO}.sh"
 
-yum -y -q -e 0 install clang $GFORTRAN
+yum -y -q -e 0 install clang $DISTRO_GFORTRAN
 
 install_cmake
 
-git clone --branch v$VERSION --depth 1 https://github.com/JuliaLang/julia.git $PREFIX
+git clone --branch v$PACKAGE_VERSION --depth 1 https://github.com/JuliaLang/julia.git $PREFIX
 ( cd $PREFIX && make USEGCC=0 USECLANG=1 )
 
 cat << EOF > /tmp/after-install
@@ -30,14 +25,14 @@ cat << EOF > /tmp/before-remove
 rm -f /usr/local/bin/julia
 EOF
 
-fpm --input-type dir --output-type rpm --package /packages --rpm-dist $DISTRO \
-  --name julia --version $VERSION --iteration $ITERATION \
+fpm --input-type dir --output-type rpm --package /packages --rpm-dist $PACKAGE_DISTRO \
+  --name julia --PACKAGE_VERSION $PACKAGE_VERSION --PACKAGE_ITERATION $PACKAGE_ITERATION \
   --rpm-summary 'The Julia programming language' \
   --description 'Julia is a high-level, high-performance dynamic language for technical computing.' \
   --url 'https://julialang.org/' \
   --license 'Apache 2.0' \
-  --maintainer "${MAINTAINER}" \
-  --vendor "${VENDOR}" \
+  --maintainer "${PACKAGE_MAINTAINER}" \
+  --vendor "${PACKAGE_VENDOR}" \
   --after-install /tmp/after-install \
   --before-remove /tmp/before-remove \
   --force \

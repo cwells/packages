@@ -3,10 +3,10 @@
 # set -e
 
 if [ -z "$1" -o -z "$2" -o -z "$3" ]; then
-  echo "build <package> <version> <distro>"
+  echo "build <PACKAGE> <VERSION> <DISTRO>"
   exit 1
 elif [ ! -d "$1" ]; then
-  echo "invalid package \"$1\""
+  echo "invalid PACKAGE \"$1\""
   exit 1
 fi
 
@@ -20,22 +20,24 @@ function version_split {
   printf "%s" "${parts[$2]:=1}"
 }
 
-package=$1
-version=$( version_split "$2" 0 )
-iteration=$( version_split "$2" 1 )
-distro=$( distro_name "$3" )
+PACKAGE=$1
+VERSION=$( version_split "$2" 0 )
+ITERATION=$( version_split "$2" 1 )
+DISTRO=$( distro_name "$3" )
 
 mkdir -p packages
 
-docker build -t "fpm-${distro}" -f "Dockerfile.${distro}" .
+docker build -t "fpm-${DISTRO}" -f "Dockerfile.${DISTRO}" .
 
 docker run \
   --volume "$PWD/packages:/packages" \
-  --volume "$PWD/${package}:/scripts" \
+  --volume "$PWD/${PACKAGE}:/scripts" \
   --env-file "$PWD/.env" \
-  --env "PACKAGE_VERSION=${version}" \
-  --env "PACKAGE_ITERATION=${iteration}" \
-  --env "PACKAGE_DISTRO=${distro}" \
+  --env "PACKAGE_VERSION=${VERSION}" \
+  --env "PACKAGE_ITERATION=${ITERATION}" \
+  --env "PACKAGE_DISTRO=${DISTRO}" \
+  --env "PACKAGE_VENDOR=${PACKAGE_VENDOR:=unset}" \
+  --env "PACKAGE_MAINTAINER=${PACKAGE_MAINTAINER:=unset}" \
   --entrypoint "/scripts/entrypoint" \
   --rm \
-  "fpm-${distro}"
+  "fpm-${DISTRO}"

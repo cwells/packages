@@ -2,18 +2,13 @@
 
 set -e
 
-VERSION=$PACKAGE_VERSION
-ITERATION=$PACKAGE_ITERATION
-DISTRO=$PACKAGE_DISTRO
 PREFIX=/opt/elixir
-MAINTAINER=${PACKAGE_MAINTAINER:=unset}
-VENDOR=${PACKAGE_VENDOR:=unset}
 
-source "/scripts/${DISTRO}.sh"
+source "/scripts/${PACKAGE_DISTRO}.sh"
 
 install_erlang
 
-git clone --branch v$VERSION --depth 1 https://github.com/elixir-lang/elixir.git $PREFIX
+git clone --branch v$PACKAGE_VERSION --depth 1 https://github.com/elixir-lang/elixir.git $PREFIX
 ( cd $PREFIX && make )
 
 cat << EOF > /tmp/after-install
@@ -24,15 +19,15 @@ cat << EOF > /tmp/before-remove
 rm -f /usr/local/bin/{iex,mix,elixir,elixirc}
 EOF
 
-fpm --input-type dir --output-type rpm --package /packages --rpm-dist $DISTRO \
-  --name elixir --version $VERSION --iteration $ITERATION \
-  --depends "${ERLANG}" \
+fpm --input-type dir --output-type rpm --package /packages --rpm-dist $PACKAGE_DISTRO \
+  --name elixir --version $PACKAGE_VERSION --iteration $PACKAGE_ITERATION \
+  --depends "${DISTRO_ERLANG}" \
   --rpm-summary 'The Elixir programming language' \
   --description 'Elixir is a dynamic, functional language designed for building scalable and maintainable applications.' \
   --url 'https://elixir-lang.org/' \
   --license 'Apache 2.0' \
-  --maintainer "${MAINTAINER}" \
-  --vendor "${VENDOR}" \
+  --maintainer "${PACKAGE_MAINTAINER}" \
+  --vendor "${PACKAGE_VENDOR}" \
   --after-install /tmp/after-install \
   --before-remove /tmp/before-remove \
   --force \
