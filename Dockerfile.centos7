@@ -10,3 +10,5 @@ RUN \
   yum -y -q -e 0 group install "Development Tools" && \
   yum -y -q -e 0 install which rpm-build git-core bzip2 ruby ruby-devel rubygems && \
   gem install fpm --no-rdoc --no-ri
+
+ENTRYPOINT ["/scripts/entrypoint"]

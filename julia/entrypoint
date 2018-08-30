@@ -10,7 +10,7 @@ CMAKE="${CMAKE_MAJOR}.${CMAKE_MINOR}.${CMAKE_POINT}"
 
 source "/scripts/${PACKAGE_DISTRO}.sh"
 
-yum -y -q -e 0 install clang $DISTRO_GFORTRAN
+yum -y -q -e 0 install clang m4 $DISTRO_GFORTRAN
 
 install_cmake
 

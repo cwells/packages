@@ -9,3 +9,5 @@ RUN \
   yum -y -q -e 0 group install "Development Tools" && \
   yum -y -q -e 0 install redhat-rpm-config rpm-build cmake bzip2 which ruby ruby-devel rubygems python2 && \
   gem install fpm --no-rdoc --no-ri
+
+ENTRYPOINT ["/scripts/entrypoint"]

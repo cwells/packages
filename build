@@ -38,6 +38,5 @@ docker run \
   --env "PACKAGE_DISTRO=${DISTRO}" \
   --env "PACKAGE_VENDOR=${PACKAGE_VENDOR:=unset}" \
   --env "PACKAGE_MAINTAINER=${PACKAGE_MAINTAINER:=unset}" \
-  --entrypoint "/scripts/entrypoint" \
   --rm \
   "fpm-${DISTRO}"
