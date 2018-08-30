@@ -37,4 +37,5 @@ docker run \
   --env "PACKAGE_ITERATION=${iteration}" \
   --env "PACKAGE_DISTRO=${distro}" \
   --entrypoint "/scripts/entrypoint" \
+  --rm \
   "fpm-${distro}"
