@@ -3,6 +3,7 @@ Generate RPMs using Docker and [FPM](https://github.com/jordansissel/fpm). Basic
 ### Example
 ```bash
 $ ./build elixir 1.7.2:1 centos:7
+$ ./build julia 1.0.1:1 fedora:28
 ```
 Resulting RPM appears in `packages/` directory.
 
