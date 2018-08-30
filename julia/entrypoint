@@ -2,13 +2,9 @@
 
 set -e
 
-function version_split {
-  local IFS='.'; read -ra parts <<< "$1" # split on "."
-  printf "%s" "${parts[$2]:=1}"
-}
-
 PREFIX=/opt/julia
 
+source "/scripts/functions.sh"
 source "/scripts/${PACKAGE_DISTRO}.sh"
 
 yum -y -q -e 0 install clang m4 $DISTRO_GFORTRAN
