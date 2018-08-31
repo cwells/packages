@@ -1,7 +1,8 @@
 DISTRO_PKG='yum -y -q -e 0'
-DISTRO_GFORTRAN='gfortran'
+DISTRO_BUILDDEPS="gfortran"
+DISTRO_PKGDEPS=
 
-function install_cmake() {
+function install_custom_deps() {
   $DISTRO_PKG remove cmake
 
   CMAKE_VERSION=${CMAKE_VERSION:='3.12.1'}
@@ -9,7 +10,7 @@ function install_cmake() {
   CMAKE_MINOR=$( version_split $CMAKE_VERSION 1 )
   CMAKE_SHORT="${CMAKE_MAJOR}.${CMAKE_MINOR}"
 
-  ( # julia requires recent cmake
+  (
     cd /usr/local/src
     curl "https://cmake.org/files/v${CMAKE_MAJOR}.${CMAKE_MINOR}/cmake-${CMAKE_VERSION}.tar.gz" -o cmake.tar.gz
     tar zxvf cmake.tar.gz

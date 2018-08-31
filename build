@@ -27,7 +27,7 @@ DISTRO=$( distro_name "$3" )
 
 mkdir -p packages
 
-docker build -t "fpm-${DISTRO}" -f "Dockerfile.${DISTRO}" .
+docker build -t "fpm/${DISTRO}" -f "Dockerfile.${DISTRO}" .
 
 docker run \
   --volume "$PWD/packages:/packages" \
@@ -39,4 +39,4 @@ docker run \
   --env "PACKAGE_VENDOR=${PACKAGE_VENDOR:=unset}" \
   --env "PACKAGE_MAINTAINER=${PACKAGE_MAINTAINER:=unset}" \
   --rm \
-  "fpm-${DISTRO}"
+  "fpm/${DISTRO}"

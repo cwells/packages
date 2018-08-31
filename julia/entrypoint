@@ -7,12 +7,12 @@ PREFIX=/opt/julia
 source "/scripts/functions.sh"
 source "/scripts/${PACKAGE_DISTRO}.sh"
 
-$DISTRO_PKG install clang m4 $DISTRO_GFORTRAN
+$DISTRO_PKG install clang m4 pcre2 pcre2-devel $DISTRO_BUILDDEPS
 
-install_cmake
+install_custom_deps
 
 git clone --branch v$PACKAGE_VERSION --depth 1 https://github.com/JuliaLang/julia.git $PREFIX
-( cd $PREFIX && make USEGCC=0 USECLANG=1 )
+( cd $PREFIX && make -j4 USEGCC=0 USECLANG=1 )
 
 cat << EOF > /tmp/after-install
 ln -s $PREFIX/bin/julia /usr/local/bin
@@ -22,7 +22,9 @@ cat << EOF > /tmp/before-remove
 rm -f /usr/local/bin/julia
 EOF
 
-fpm --input-type dir --output-type rpm --package /packages --rpm-dist $PACKAGE_DISTRO \
+fpm --input-type dir --output-type rpm \
+  --package /packages --rpm-dist $PACKAGE_DISTRO \
+  --depends pcre2 $DISTRO_PKGDEPS \
   --name julia --version $PACKAGE_VERSION --iteration $PACKAGE_ITERATION \
   --rpm-summary 'The Julia programming language' \
   --description 'Julia is a high-level, high-performance dynamic language for technical computing.' \
