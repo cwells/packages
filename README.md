@@ -3,7 +3,7 @@ Generate RPMs using Docker and [FPM](https://github.com/jordansissel/fpm). Basic
 ### Example
 ```bash
 $ ./build julia 1.0.0:1 fedora:28
-... lots of time and messages later
+
 {:timestamp=>"2018-08-31T00:45:52.937327+0000", :message=>"Created package", :path=>"/packages/julia-1.0.0-1.centos7.x86_64.rpm"}
 
 ```
